@@ -5,9 +5,9 @@ import NotFound from "./pages/NotFound.jsx";
 import Signup from "./pages/Auth/Signup.jsx";
 import Guest from "./layouts/Guest.jsx";
 import Main from "./layouts/Main.jsx";
-import Ministry from "./pages/Dashboard/Ministry.jsx";
-import Chamber from "./pages/Dashboard/Chamber.jsx";
-
+import Ministry from "./pages/Dashboards/Ministry.jsx";
+import Chamber from "./pages/Dashboards/Chamber.jsx";
+import Calendar from "./pages/Calendar.jsx";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -23,12 +23,16 @@ const router = createBrowserRouter([
                 element: <Home />,
             },
             {
-                path: "/dashboard/minstry",
+                path: "/dashboards/ministry",
                 element: <Ministry />,
             },
             {
-                path: "/dashboard/chamber",
+                path: "/dashboards/chamber",
                 element: <Chamber />,
+            },
+            {
+                path: "/calendar",
+                element: <Calendar />,
             },
         ]
     },
