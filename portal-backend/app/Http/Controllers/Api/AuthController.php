@@ -22,15 +22,16 @@ class AuthController extends Controller
         // ]);
 
         // $credentials = [
-        //     'email' => $user['email'],
-        //     'password' => $user['password'],
+        //     // 'name' => '',
+        //     'email' => $data['email'],
+        //     'password' => bcrypt($data['password']),
         // ];
 
-        if(!auth()->attempt($credentials)){
+        if(!auth()->attempt($credentials,false)){
             // return response()->json(['status' =>'success']);
             return response([
                 'status' =>'error',
-                'message' => 'Credentials Incorrect']);
+                'message' => 'Credentials Incorrect'], 422);
         }
 
         $user = auth()->user();
@@ -54,7 +55,7 @@ class AuthController extends Controller
         $credentials = [
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => $data['password'],
+            'password' => bcrypt($data['password']),
         ];
 
         $user = User::create($credentials);

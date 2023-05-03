@@ -1,0 +1,6 @@
+  502  php artisan make:controller Api/UserController --model=user --resource --requests
+  503  php artisan make:controller Api/UserController --model=User --resource --requests --api
+  504  php artisan make:resource UserResource
+  505  php artisan db seed
+  475  php artisan migrate
+  476  php artisan migrate:refresh

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../../contexts/ContextProvider";
@@ -9,6 +9,7 @@ export default function Signup() {
   const passwordRef = useRef();
   const passwordConfirmationRef = useRef();
 
+  const [errors, setErrors] = useState();
   const {setUser, setToken} = useStateContext()
 
   const onSubmit = (event) => {
@@ -41,6 +42,7 @@ export default function Signup() {
         //   alert(error);
         // });
         console.log(response.data);
+        setErrors(errors);
       }
     });
 
@@ -53,6 +55,19 @@ export default function Signup() {
     </div>
       <h2 className="mt-3 text-center">Sign Up for Free</h2>
       <p className="text-center">Enter your email address and password to access admin panel.</p>
+      <p>
+           {
+              errors && <div className="badge-danger">
+                  {/* {errors.name && <li>{errors.name}</li>}
+                  {errors.email && <li>{errors.email}</li>}
+                  {errors.password && <li>{errors.password}</li>}
+                  {errors.password_confirmation && <li>{errors.password_confirmation}</li>} */}
+                  {Object.keys(errors).map(key => (
+                    <p key={key}>{errors[key][0]}</p>
+                    ))}
+              </div>
+           }  
+      </p>
       <form className="mt-4" onSubmit={onSubmit}>
         <div className="row">
           <div className="col-lg-12">

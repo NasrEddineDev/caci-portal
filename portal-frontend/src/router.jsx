@@ -8,6 +8,9 @@ import Main from "./layouts/Main.jsx";
 import Ministry from "./pages/Dashboards/Ministry.jsx";
 import Chamber from "./pages/Dashboards/Chamber.jsx";
 import Calendar from "./pages/Calendar.jsx";
+import EventsList from "./pages/Events/list.jsx";
+import Users from "./pages/Users/Users.jsx";
+import UserForm from "./pages/Users/UserForm.jsx";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -33,6 +36,22 @@ const router = createBrowserRouter([
             {
                 path: "/calendar",
                 element: <Calendar />,
+            },
+            {
+                path: "/events",
+                element: <EventsList />,
+            },
+            {
+                path: "/users",
+                element: <Users />,
+            },
+            {
+                path: "/users/new",
+                element: <UserForm key="userCreate"/>,
+            },
+            {
+                path: "/users/:id",
+                element: <UserForm key="userUpdate"/>,
             },
         ]
     },

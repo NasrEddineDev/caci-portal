@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
-// import '../../dist/css/style.css';
+// import '../../public/dist/css/style.css';
+import '../../public/dist/css/custom.css';
 
 export default function Guest() {
     const {token} = useStateContext();
@@ -18,8 +19,7 @@ export default function Guest() {
                 <div className="lds-pos"></div>
             </div>
         </div>
-        <div className="auth-wrapper d-flex no-block justify-content-center align-items-center position-relative"
-             style={{backgroundImage: "url(./public/assets/images/big/auth-bg.jpg)", backgroundRepeat: "no-repeat", backgroundPosition: "center"}}>
+        <div className="auth-wrapper d-flex no-block justify-content-center align-items-center position-relative">
             <div className="auth-box row">
                 <div className="col-lg-7 col-md-5 modal-bg-img" 
                 // style="background-image: url(../assets/images/big/3.jpg);"

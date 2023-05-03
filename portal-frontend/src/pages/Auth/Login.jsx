@@ -1,8 +1,41 @@
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import axiosClient from "../../axios-client";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 export default function Login() {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+  const [errors, setErrors] = useState();
+  const {setUser, setToken} = useStateContext()
   const onSubmit = (event) => {
     event.preventDefault();
+
+    const payload = {
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    }
+    setErrors(null);
+    axiosClient.post('/login', payload)
+    .then((response) => {
+      console.log(response.data);
+      setUser(response.data.user);
+      setToken(response.data.token);
+    })
+    .catch((error) => {
+      console.log(error);
+      const response = error.response;
+      if (response && response.status === 422) { 
+        const errors = response.data.errors;
+        console.log(response.data);
+        if (response.data.errors){
+          setErrors(errors);
+        } else {
+          setErrors({email: [response.message]});
+        }
+      }
+    });
 
   };
 
@@ -13,19 +46,28 @@ export default function Login() {
       </div>
       <h2 className="mt-3 text-center">Sign In</h2>
       <p className="text-center">Enter your email address and password to access admin panel.</p>
+      <p className="text-center">
+           {
+              errors && <div className="badge-danger">
+                  {Object.keys(errors).map(key => (
+                    <p key={key}>{errors[key][0]}</p>
+                    ))}
+              </div>
+           }  
+      </p>
       <form className="mt-4" onSubmit={onSubmit}>
         <div className="row">
           <div className="col-lg-12">
             <div className="form-group">
-              <label className="text-dark" htmlFor="uname">Username</label>
-              <input className="form-control" id="uname" type="text"
-                placeholder="enter your username" />
+              <label className="text-dark" htmlFor="email">Email</label>
+              <input ref={emailRef} className="form-control" id="email" type="text"
+                placeholder="enter your email" />
             </div>
           </div>
           <div className="col-lg-12">
             <div className="form-group">
               <label className="text-dark" htmlFor="pwd">Password</label>
-              <input className="form-control" id="pwd" type="password"
+              <input ref={passwordRef} className="form-control" id="pwd" type="password"
                 placeholder="enter your password" />
             </div>
           </div>

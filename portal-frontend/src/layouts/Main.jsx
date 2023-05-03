@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
+import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
 // import '../../dist/css/style.css';
 
 export default function Main() {
-  const { user, token } = useStateContext();
+  const { user, token, setUser, setToken } = useStateContext();
   if (!token) {
     return (
       <Navigate to="/login" />
@@ -12,10 +14,22 @@ export default function Main() {
 
   const onLogout = (event) => {
     event.preventDefault();
-    // localStorage.removeItem("token");
-    // localStorage.removeItem("user");
-    // window.location.reload();
+    axiosClient.post("/logout")
+    .then((response) => {
+        setUser(null);
+        setToken(null);
+        window.location.href = '/login'
+      });
   }
+
+  useEffect(() => {
+      axiosClient.get("/user/")
+      .then(({data}) => {
+        setUser(data);
+      })
+      .catch(err => console.log(err));
+  }, [])
+
   const ministryDashboard = (event) => {
     event.preventDefault();
     <Navigate to="/dashboards/minstry" />
@@ -228,7 +242,7 @@ export default function Main() {
                   <img src="../assets/images/users/profile-pic.jpg" alt="user" className="rounded-circle"
                     width="40" />
                   <span className="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
-                    className="text-dark">Jason Doe</span> <i data-feather="chevron-down"
+                    className="text-dark">{user.name}</span> <i data-feather="chevron-down"
                       className="svg-icon"></i></span>
                 </a>
                 <div className="dropdown-menu dropdown-menu-right user-dd animated flipInY">
@@ -246,7 +260,7 @@ export default function Main() {
                     className="svg-icon mr-2 ml-1"></i>
                     Account Setting</a>
                   <div className="dropdown-divider"></div>
-                  <a className="dropdown-item" href="javascript:void(0)"><i data-feather="power"
+                  <a className="dropdown-item" href="javascript:void(0)"onClick={onLogout}><i data-feather="power"
                     className="svg-icon mr-2 ml-1"></i>
                     Logout</a>
                   <div className="dropdown-divider"></div>
@@ -280,7 +294,7 @@ export default function Main() {
               
               <li className="nav-small-cap"><span className="hide-menu">Works</span></li>
 
-              <li className="sidebar-item"> <Link to="/dashboards/ministry"><a className="sidebar-link" href="ticket-list.html"
+              <li className="sidebar-item"> <Link to="/events"><a className="sidebar-link" href="#"
                 aria-expanded="false"><i data-feather="tag" className="feather-icon"></i><span
                   className="hide-menu">Events</span></a></Link></li>
               <li className="sidebar-item"><Link to="/dashboards/ministry"> <a className="sidebar-link sidebar-link" href="app-chat.html"
@@ -292,9 +306,9 @@ export default function Main() {
 
               <li className="nav-small-cap"><span className="hide-menu">Users</span></li>
 
-              <li className="sidebar-item"> <a className="sidebar-link" href="ticket-list.html"
+              <li className="sidebar-item"> <Link to="/users"><a className="sidebar-link" href="#"
                 aria-expanded="false"><i data-feather="tag" className="feather-icon"></i><span
-                  className="hide-menu">List</span></a></li>
+                  className="hide-menu">List</span></a></Link></li>
               <li className="sidebar-item"> <a className="sidebar-link sidebar-link" href="app-chat.html"
                 aria-expanded="false"><i data-feather="message-square" className="feather-icon"></i><span
                   className="hide-menu">Roles</span></a></li>
@@ -525,12 +539,12 @@ export default function Main() {
         <div className="page-breadcrumb">
           <div className="row">
             <div className="col-7 align-self-center">
-              <h4 className="page-title text-truncate text-dark font-weight-medium mb-1">Calendar</h4>
+              <h4 className="page-title text-truncate text-dark font-weight-medium mb-1">Page Title</h4>
               <div className="d-flex align-items-center">
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb m-0 p-0">
-                    <li className="breadcrumb-item text-muted active" aria-current="page">Apps</li>
-                    <li className="breadcrumb-item text-muted" aria-current="page">Calendar</li>
+                    <li className="breadcrumb-item text-muted active" aria-current="page">Header</li>
+                    <li className="breadcrumb-item text-muted" aria-current="page">Sub header</li>
                   </ol>
                 </nav>
               </div>
@@ -552,7 +566,9 @@ export default function Main() {
     <!-- ============================================================== -->
     <!-- Container fluid  -->
     <!-- ============================================================== --> */}
-        <Outlet />
+    <div class="container-fluid">
+      <Outlet />
+    </div>
         {/* <!-- ============================================================== -->
     <!-- End Container fluid  -->
     <!-- ============================================================== -->
