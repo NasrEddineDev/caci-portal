@@ -13,26 +13,25 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('participents', function (Blueprint $table) {
             $table->increments('id', true);
-            $table->string('name_lt');
             $table->string('name_ar');
-            $table->string('description');
+            $table->string('name_lt');
             $table->string('type');
-            $table->string('total_costs');
-            $table->string('total_profits');
-            $table->string('session');
-            $table->string('started_at');
-            $table->string('ended_at');
-
+            $table->string('legal_form');
+            $table->string('address_ar');
+            $table->string('address_lt');
+            $table->string('email');
+            $table->string('mobile');
+            $table->string('website');
+            $table->string('tel');
+            $table->string('fax');
             $table->integer('user_id')->unsigned();
             $table->integer('city_id')->unsigned();
-            $table->integer('organization_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
-            $table->foreign('organization_id')->references('id')->on('organizations');
         });
     }
 
@@ -43,6 +42,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('participents');
     }
 };

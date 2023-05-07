@@ -6,49 +6,56 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Status extends Model
+class Participent extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
-
-    function __construct($attributes = array())
-    {
-        parent::__construct($attributes);
-        $this->user_id = Auth::Id();
-    }
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    protected static $logName = 'participent';
     static $logFillable = true;
+    protected $dates = ['birthday'];
 
     protected $fillable = [
-        'value',
-        'note',
-        'description',
+        'name_ar',
+        'name_lt',
         'type',
+        'legal_form',
+        'address_ar',
+        'address_lt',
+        'email',
+        'mobile',
+        'website',
+        'tel',
+        'fax',
+        'city_id',
         'user_id',
-        'payment_id',
-        'entity_id',
-        'entity_type'
     ];
 
+    public function getNameAttribute()
+    {
+        return App::currentLocale() == 'ar' ? "{$this->name_ar}" : "{$this->name_lt}";
+    }
 
-    public function payment()
+    public function getAddressAttribute()
     {
-        return $this->belongsTo(Payment::class);
+        return App::currentLocale() == 'ar' ? "{$this->address_ar}" : "{$this->address_lt}";
     }
-    public function enterprise()
-    {
-        return $this->belongsTo(Enterprise::class);
-    }
+
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Organization::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
     }
 
     public function events()
@@ -65,4 +72,5 @@ class Status extends Model
     {
         return $this->morphedByMany(Training::class, 'statuses_associations');
     }
+
 }

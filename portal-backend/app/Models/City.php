@@ -33,8 +33,8 @@ class City extends Model
         return (App::currentLocale() == 'ar' && !empty($this->name_ar)) ?
                "{$this->name_ar}" : (App::currentLocale() == 'en' || App::currentLocale() == 'ar' ? "{$this->name_en}" : "{$this->name_fr}");
     }
-    public function enterprises()
+    public function organizations()
     {
-        return $this->hasMany(Enterprise::class);
+        return $this->hasMany(Organization::class);
     }
 }

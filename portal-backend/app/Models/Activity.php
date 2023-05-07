@@ -21,11 +21,22 @@ class Activity extends Model
         return App::currentLocale() == 'ar' ? "{$this->name_ar}" : (App::currentLocale() == 'en' ? "{$this->name_en}" : "{$this->name_fr}");
     }
 
-    public function enterprises()
+    public function organizations()
     {
-        return $this->belongsToMany(Enterprise::class, 'enterprises_activities')
+        return $this->belongsToMany(Enterprise::class, 'organizations_activities')
         // return $this->belongsToMany(Enterprise::class, 'enterprises_activities', 'enterprise_id', 'activity_id')
         // ->using(EnterpriseActivity::class)
         ->withTimestamps();
     }
+
+
+    // public function statuses(): MorphToMany
+    // {
+    //     return $this->morphToMany(Status::class, 'statuses_associations');
+    // }
+
+    // public function participents(): MorphToMany
+    // {
+    //     return $this->morphToMany(Participent::class, 'participents_associations');
+    // }
 }

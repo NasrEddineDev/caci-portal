@@ -32,11 +32,6 @@ class Manager extends Model
         'email',
         'mobile',
         'tel',
-        // 'address_ar',
-        // 'address',
-        // 'city_id',
-        // 'birthday',
-        // 'gender',
     ];
 
     public function getFirstnameAttribute()
@@ -54,12 +49,8 @@ class Manager extends Model
         return  "{$this->firstname} {$this->lastname}";
     }
 
-    public function enterprise()
+    public function organization()
     {
-        return $this->hasOne(Enterprise::class);
-    }
-    public function city()
-    {
-        return $this->belongsTo(AlgeriaCity::class);
+        return $this->hasOne(Organization::class);
     }
 }

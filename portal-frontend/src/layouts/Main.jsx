@@ -5,7 +5,8 @@ import { useStateContext } from "../contexts/ContextProvider";
 // import '../../dist/css/style.css';
 
 export default function Main() {
-  const { user, token, setUser, setToken } = useStateContext();
+  const { user, token, setUser, setToken } = useStateContext()
+  const {notification} = useStateContext()
   if (!token) {
     return (
       <Navigate to="/login" />
@@ -287,34 +288,37 @@ export default function Main() {
           {/* <!-- Sidebar navigation--> */}
           <nav className="sidebar-nav">
             <ul id="sidebarnav">
-              <li className="sidebar-item"> <Link to="/dashboards/ministry"><a className="sidebar-link sidebar-link" href="#" 
-                aria-expanded="false"><i data-feather="home" className="feather-icon"></i><span
-                  className="hide-menu">Dashboard</span></a></Link></li>
+              <li className="sidebar-item"> <Link to="/dashboards/ministry" className="sidebar-link" >
+                <i data-feather="home" className="feather-icon"></i><span
+                  className="hide-menu">Dashboard</span></Link></li>
+                  {/* <li className="sidebar-item"> <Link to="/dashboards/ministry"><a className="sidebar-link sidebar-link" href="#" 
+                    aria-expanded="false"><i data-feather="home" className="feather-icon"></i><span
+                      className="hide-menu">Dashboard</span></a></Link></li> */}
               <li className="list-divider"></li>
               
               <li className="nav-small-cap"><span className="hide-menu">Works</span></li>
 
-              <li className="sidebar-item"> <Link to="/events"><a className="sidebar-link" href="#"
-                aria-expanded="false"><i data-feather="tag" className="feather-icon"></i><span
-                  className="hide-menu">Events</span></a></Link></li>
-              <li className="sidebar-item"><Link to="/dashboards/ministry"> <a className="sidebar-link sidebar-link" href="app-chat.html"
+              <li className="sidebar-item"> <Link to="/events" className="sidebar-link">
+                <i data-feather="tag" className="feather-icon"></i><span
+                  className="hide-menu">Events</span></Link></li>
+              <li className="sidebar-item"><Link to="/dashboards/chamber" className="sidebar-link" href="#!"
                 aria-expanded="false"><i data-feather="message-square" className="feather-icon"></i><span
-                  className="hide-menu">Activies</span></a></Link></li>
-              <li className="sidebar-item"><Link to="/calendar"><a className="sidebar-link sidebar-link" href="/calendar"
+                  className="hide-menu">Activies</span></Link></li>
+              <li className="sidebar-item"><Link to="/calendar" className="sidebar-link" href="/calendar"
                 aria-expanded="false"><i data-feather="calendar" className="feather-icon"></i><span
-                  className="hide-menu">Calendar</span></a></Link></li>
+                  className="hide-menu">Calendar</span></Link></li>
 
               <li className="nav-small-cap"><span className="hide-menu">Users</span></li>
 
-              <li className="sidebar-item"> <Link to="/users"><a className="sidebar-link" href="#"
-                aria-expanded="false"><i data-feather="tag" className="feather-icon"></i><span
-                  className="hide-menu">List</span></a></Link></li>
-              <li className="sidebar-item"> <a className="sidebar-link sidebar-link" href="app-chat.html"
-                aria-expanded="false"><i data-feather="message-square" className="feather-icon"></i><span
-                  className="hide-menu">Roles</span></a></li>
-              <li className="sidebar-item"> <a className="sidebar-link sidebar-link" href="app-calendar.html"
+              <li className="sidebar-item"> <Link to="/users" className="sidebar-link" href="#">
+                <i data-feather="tag" className="feather-icon"></i><span
+                  className="hide-menu">List</span></Link></li>
+              <li className="sidebar-item"> <Link to="/users" className="sidebar-link" href="#!">
+                <i data-feather="message-square" className="feather-icon"></i><span
+                  className="hide-menu">Roles</span></Link></li>
+              <li className="sidebar-item"> <Link to="/users" className="sidebar-link" href="#!"
                 aria-expanded="false"><i data-feather="calendar" className="feather-icon"></i><span
-                  className="hide-menu">Permissions</span></a></li>
+                  className="hide-menu">Permissions</span></Link></li>
 
               <li className="nav-small-cap"><span className="hide-menu">Organizations</span></li>
 
@@ -566,8 +570,16 @@ export default function Main() {
     <!-- ============================================================== -->
     <!-- Container fluid  -->
     <!-- ============================================================== --> */}
-    <div class="container-fluid">
+    <div className="container-fluid">
       <Outlet />
+      {notification &&
+    // <div className="alert alert-success alert-dismissible fade show" role="alert">
+    //   <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+    //     <span aria-hidden="true">&times;</span>
+    //   </button>
+    <div className="notifications">
+      {notification}
+    </div>}
     </div>
         {/* <!-- ============================================================== -->
     <!-- End Container fluid  -->

@@ -20,13 +20,13 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();
             $table->integer('role_id')->unsigned()->nullable();
-            $table->integer('profile_id')->unsigned()->nullable();
+            $table->integer('employee_id')->unsigned()->nullable();
             $table->integer('organization_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->rememberToken();
             $table->foreign('role_id')->references('id')->on('roles');
-            $table->foreign('profile_id')->references('id')->on('profiles');
+            $table->foreign('employee_id')->references('id')->on('employees');
             $table->foreign('organization_id')->references('id')->on('organizations');
         });
     }

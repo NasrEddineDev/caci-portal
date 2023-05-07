@@ -9,7 +9,7 @@ use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Organization extends Model
+class Department extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
 
@@ -18,7 +18,7 @@ class Organization extends Model
         return LogOptions::defaults();
     }
 
-    protected static $logName = 'organization';
+    protected static $logName = 'department';
     static $logFillable = true;
     protected $fillable = [
         'name_ar',
@@ -27,17 +27,12 @@ class Organization extends Model
         'legal_form',
         'type',
         'status',
-        'address_ar',
-        'address_fr',
-        'address_en',
         'email',
         'mobile',
         'tel',
         'website',
         'fax',
-        'balance',
-        'manager_id',
-        'city_id',
+        'organization_id',
     ];
 
     public function getNameAttribute()
@@ -55,52 +50,20 @@ class Organization extends Model
         return $certificateName == 'form-a-en' ? "{$this->name_en}" : ($certificateName == 'formule-a-fr' ? "{$this->name_fr}" : "{$this->name_ar}");
     }
 
-    public function users()
+    public function address($certificateName)
     {
-        return $this->hasMany(User::class);
+        return $certificateName == 'form-a-en' ? "{$this->address_en}" : ($certificateName == 'formule-a-fr' ? "{$this->address_fr}" : "{$this->address_ar}");
     }
 
-    public function manager()
+    public function user()
     {
-        return $this->belongsTo(Manager::class);
+        $firstUser = User::where('enterprise_id', $this->id)->orderBy('created_at','DESC')->first();
+        return $firstUser ? $firstUser : null;
     }
 
-    public function events()
+    public function organization()
     {
-        return $this->hasMany(Event::class);
+        return $this->belongsTo(Organization::class);
     }
 
-    public function trainings()
-    {
-        return $this->hasMany(Training::class);
-    }
-
-    public function departments()
-    {
-        return $this->hasMany(Department::class);
-    }
-
-    public function activities()
-    {
-        return $this->belongsToMany(Activity::class, 'enterprises_activities')
-        // return $this->belongsToMany(Activity::class, 'enterprises_activities', 'enterprise_id', 'activity_id')
-        // ->using(EnterpriseActivity::class)
-        ->withTimestamps();
-    }
-
-    public function city()
-    {
-        return $this->belongsTo(City::class);
-    }
-
-    public function getStatusAttribute()
-    {
-        //last status
-        $lastStatus = Status::where('enterprise_id', $this->id)->orderBy('created_at','DESC')->first();
-        return $lastStatus ? $lastStatus->value : "Draft";
-    }
-    public function statuses()
-    {
-        return $this->hasMany(Status::class);
-    }
 }

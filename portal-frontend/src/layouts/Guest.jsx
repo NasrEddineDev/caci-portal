@@ -6,9 +6,10 @@ import '../../public/dist/css/custom.css';
 export default function Guest() {
     const {token} = useStateContext();
     if (token) {
-        return (
-            <Navigate to ="/" />
-        )
+        // return (
+        //     <Navigate to ="/" />
+        // )
+        window.location.href = '/'
     }
 
     return (

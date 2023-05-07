@@ -13,17 +13,17 @@ class CreateEntitySettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('entity_settings', function (Blueprint $table) {
+        Schema::create('settings_associations', function (Blueprint $table) {
             $table->increments('id', true);
+            $table->string('value');
             $table->string('name');
             $table->string('description');
             $table->integer('setting_id')->unsigned();
-            $table->foreign('setting_id')->references('id')
-                  ->on('settings')->onDelete('cascade');
-            $table->nullableMorphs('entity_settings');
+            $table->nullableMorphs('entity');
+            $table->timestamps();
+            $table->softDeletes();
 
-                  $table->timestamps();
-                  $table->softDeletes();
+            $table->foreign('setting_id')->references('id')->on('settings')->onDelete('cascade');
         });
     }
 
@@ -34,6 +34,6 @@ class CreateEntitySettingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('entity_settings');
+        Schema::dropIfExists('settings_associations');
     }
 }

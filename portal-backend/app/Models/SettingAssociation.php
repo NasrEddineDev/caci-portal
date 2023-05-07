@@ -24,6 +24,8 @@ class EntitySetting extends MorphPivot
     public $incrementing = true;
     protected $fillable = [
         'value',
+        'name',
+        'description',
         'setting_id',
         'entity_id',
         'entity_type'

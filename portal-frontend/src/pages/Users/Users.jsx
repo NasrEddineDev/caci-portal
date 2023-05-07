@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axiosClient from "../../axios-client";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 export default function Users() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(false)
+  const {setNotification} = useStateContext()
 
   useEffect(() => {
     getUsers();
@@ -16,7 +18,7 @@ export default function Users() {
     }
     axiosClient.delete(`/users/${user.id}`)
       .then(res => {
-        //TODO: Show notification
+        setNotification("User successfully deleted")
         getUsers();
       })
       .catch(err => console.log(err));
@@ -36,17 +38,17 @@ export default function Users() {
   }
 
   return (
-    <div class="row">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
+    <div className="row">
+      <div className="col-12">
+        <div className="card">
+          <div className="card-body">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "7px" }}>
-              <h4 class="card-title">List Users</h4>
-              {/* <h6 class="card-subtitle">Users</h6> */}
+              <h4 className="card-title">List Users</h4>
+              {/* <h6 className="card-subtitle">Users</h6> */}
               <Link to="/users/new"><button className="btn btn-success">Add New User</button></Link>
             </div>
-            <div class="table-responsive">
-              <table id="zero_config" class="table table-striped table-bordered no-wrap">
+            <div className="table-responsive">
+              <table id="zero_config" className="table table-striped table-bordered no-wrap">
 
 
                 {/* <div>

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
-class Profile extends Model
+class Employee extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
 
@@ -17,24 +17,29 @@ class Profile extends Model
         return LogOptions::defaults();
     }
 
-    protected static $logName = 'profile';
+    protected static $logName = 'employee';
     static $logFillable = true;
 
     protected $fillable = [
-        'firstname',
-        'lastname',
-        'birthday',
-        'gender',
+        'firstname_ar',
+        'firstname_lt',
+        'lastname_ar',
+        'lastname_lt',
         'position',
+        'department',
+        'subdepartment',
+        'office',
+        'title',
         'address',
         'mobile',
-        'signature',
-        'signatory_person_stamp_ar',
-        'signatory_person_stamp_en',
-        'signatory_person_stamp_fr',
-        'company_stamp',
-        'agce_user_id',
+        'email',
+        'tel',
+        'address_ar',
+        'address_lt',
+        'birthday',
+        'gender',
         'city_id',
+        'department_id',
         'picture',
         'language',
         'theme',

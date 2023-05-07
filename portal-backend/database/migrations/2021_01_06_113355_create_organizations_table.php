@@ -20,7 +20,7 @@ class CreateOrganizationsTable extends Migration
             $table->string('name_fr');
             $table->string('legal_form');
             $table->string('type');
-            $table->string('status')->default("Draft");
+            $table->string('status')->default("Active");
             $table->integer('balance');
             $table->string('address_ar');
             $table->string('address_en');

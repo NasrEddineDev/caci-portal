@@ -13,18 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('statuses', function (Blueprint $table) {
+        Schema::create('participents_associations', function (Blueprint $table) {
             $table->increments('id', true);
-            $table->string('current');
-            $table->string('previous');
-            $table->string('value');
-            $table->string('note');
-            $table->string('description');
-            $table->string('type');
-            $table->integer('user_id')->unsigned();
+            $table->integer('participent_id')->unsigned();
+            $table->nullableMorphs('entity');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('participent_id')->references('id')->on('participents')->onDelete('cascade');
         });
     }
 
@@ -35,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statuses');
+        Schema::dropIfExists('participents_associations');
     }
 };
