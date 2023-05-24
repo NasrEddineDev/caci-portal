@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../../contexts/ContextProvider";
+import { useTranslation } from "react-i18next";
 
 export default function Users() {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(false)
   const {setNotification} = useStateContext()
+  const [t] = useTranslation("global")
 
   useEffect(() => {
     getUsers();
@@ -16,7 +18,7 @@ export default function Users() {
     if (!window.confirm("Are you sure you want to delete this user?")) {
       return;
     }
-    axiosClient.delete(`/users/${user.id}`)
+    axiosClient.delete(`/v1/users/${user.id}`)
       .then(res => {
         setNotification("User successfully deleted")
         getUsers();
@@ -26,7 +28,7 @@ export default function Users() {
 
   const getUsers = () => {
     setLoading(true)
-    axiosClient.get('/users')
+    axiosClient.get('/v1/users')
       .then(({ data }) => {
         console.log(data)
         setUsers(data.data)
@@ -43,7 +45,7 @@ export default function Users() {
         <div className="card">
           <div className="card-body">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "7px" }}>
-              <h4 className="card-title">List Users</h4>
+              <h4 className="card-title">{t("users.list")}</h4>
               {/* <h6 className="card-subtitle">Users</h6> */}
               <Link to="/users/new"><button className="btn btn-success">Add New User</button></Link>
             </div>

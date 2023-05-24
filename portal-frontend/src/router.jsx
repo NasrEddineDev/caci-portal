@@ -11,6 +11,10 @@ import Calendar from "./pages/Calendar.jsx";
 import EventsList from "./pages/Events/list.jsx";
 import Users from "./pages/Users/Users.jsx";
 import UserForm from "./pages/Users/UserForm.jsx";
+import Roles from "./pages/Roles/Roles.jsx";
+import RoleForm from "./pages/Roles/RoleForm.jsx";
+import Permissions from "./pages/Permissions/Permissions.jsx";
+import PermissionForm from "./pages/Permissions/PermissionForm.jsx";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -41,6 +45,7 @@ const router = createBrowserRouter([
                 path: "/events",
                 element: <EventsList />,
             },
+            // Users
             {
                 path: "/users",
                 element: <Users />,
@@ -52,6 +57,32 @@ const router = createBrowserRouter([
             {
                 path: "/users/:id",
                 element: <UserForm key="userUpdate"/>,
+            },
+            // Roles
+            {
+                path: "/roles",
+                element: <Roles />,
+            },
+            {
+                path: "/roles/new",
+                element: <RoleForm key="roleCreate"/>,
+            },
+            {
+                path: "/roles/:id",
+                element: <RoleForm key="roleUpdate"/>,
+            },
+            // Permissions
+            {
+                path: "/permissions",
+                element: <Permissions />,
+            },
+            {
+                path: "/permissions/new",
+                element: <PermissionForm key="permissionCreate"/>,
+            },
+            {
+                path: "/permissions/:id",
+                element: <PermissionForm key="permissionUpdate"/>,
             },
         ]
     },

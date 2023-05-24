@@ -1,12 +1,15 @@
-import { useEffect } from "react";
-import { Link, Navigate, Outlet } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
+import { Link, NavLink, Navigate, Outlet } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
+import { useTranslation } from "react-i18next";
 // import '../../dist/css/style.css';
 
 export default function Main() {
-  const { user, token, setUser, setToken } = useStateContext()
-  const {notification} = useStateContext()
+  const { user, token, setUser, setToken, notification } = useStateContext()
+  const sidebarnav = useRef();
+  const [t, i18n] = useTranslation("global")
+  
   if (!token) {
     return (
       <Navigate to="/login" />
@@ -15,7 +18,7 @@ export default function Main() {
 
   const onLogout = (event) => {
     event.preventDefault();
-    axiosClient.post("/logout")
+    axiosClient.post("/v1/logout")
     .then((response) => {
         setUser(null);
         setToken(null);
@@ -23,8 +26,12 @@ export default function Main() {
       });
   }
 
+  const handleChangeLanguage = (event) => {
+    i18n.changeLanguage(event.target.value);
+  }
+
   useEffect(() => {
-      axiosClient.get("/user/")
+      axiosClient.get("/v1/user/")
       .then(({data}) => {
         setUser(data);
       })
@@ -40,13 +47,22 @@ export default function Main() {
     // window.location.reload();
   }
 
+  const addSelectedToParent = (event) => {
+    event.currentTarget.parentElement.classList.add('selected');
+    console.log(sidebarnav.current.children);
+    React.Children.toArray(sidebarnav.current.children).map(x => 
+      console.log(x.classList)
+      );
+    // event.currentTarget.classList.add('bg-salmon');
+  }
+
   return (
     // <div>
     //   <aside>
     //     <h1>Welcome {user.name}</h1>
-    //     <Link to="/home">Home</Link>
-    //     <Link to="/dashboard/minstry">Ministry Dashboard</Link>
-    //     <Link to="/dashboard/chamber">Chamber Dashboard</Link>
+    //     <NavLink to="/home">Home</NavLink>
+    //     <NavLink to="/dashboard/minstry">Ministry Dashboard</NavLink>
+    //     <NavLink to="/dashboard/chamber">Chamber Dashboard</NavLink>
     //   </aside>
     //   <div className="content">
     //     <header>
@@ -79,17 +95,17 @@ export default function Main() {
               <a href="index.html">
                 <b className="logo-icon">
                   {/* <!-- Dark Logo icon --> */}
-                  <img src="./public/assets/images/logo-icon.png" alt="homepage" className="dark-logo" />
+                  <img src="/public/assets/images/logo-icon.png" alt="homepage" className="dark-logo" />
                   {/* <!-- Light Logo icon --> */}
-                  <img src="./public/assets/images/logo-icon.png" alt="homepage" className="light-logo" />
+                  <img src="/public/assets/images/logo-icon.png" alt="homepage" className="light-logo" />
                 </b>
                 {/* <!--End Logo icon --> 
                     <!-- Logo text -->*/}
                 <span className="logo-text">
                   {/* <!-- dark Logo text --> */}
-                  <img src="./public/assets/images/logo-text.png" alt="homepage" className="dark-logo" />
+                  <img src="/public/assets/images/logo-text.png" alt="homepage" className="dark-logo" />
                   {/* <!-- Light Logo text --> */}
-                  <img src="./public/assets/images/logo-light-text.png" className="light-logo" alt="homepage" />
+                  <img src="/public/assets/images/logo-light-text.png" className="light-logo" alt="homepage" />
                 </span>
               </a>
             </div>
@@ -189,6 +205,83 @@ export default function Main() {
               </li>
               {/* <!-- End Notification -->
                 <!-- ============================================================== -->
+              {/* <!-- Mail --> */}
+              <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle pl-md-3 position-relative" href="javascript:void(0)"
+                  id="bell" role="button" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+                  <span><i data-feather="mail" className="svg-icon"></i></span>
+                  <span className="badge badge-danger notify-no rounded-circle">2</span>
+                </a>
+                <div className="dropdown-menu dropdown-menu-left mailbox animated bounceInDown">
+                  <ul className="list-style-none">
+                    <li>
+                      <div className="message-center notifications position-relative">
+                        {/* <!-- Message --> */}
+                        <a href="javascript:void(0)"
+                          className="message-item d-flex align-items-center border-bottom px-3 py-2">
+                          <div className="btn btn-danger rounded-circle btn-circle"><i
+                            data-feather="airplay" className="text-white"></i></div>
+                          <div className="w-75 d-inline-block v-middle pl-2">
+                            <h6 className="message-title mb-0 mt-1">Luanch Admin</h6>
+                            <span className="font-12 text-nowrap d-block text-muted">Just see
+                              the my new
+                              admin!</span>
+                            <span className="font-12 text-nowrap d-block text-muted">9:30 AM</span>
+                          </div>
+                        </a>
+                        {/* <!-- Message --> */}
+                        <a href="javascript:void(0)"
+                          className="message-item d-flex align-items-center border-bottom px-3 py-2">
+                          <span className="btn btn-success text-white rounded-circle btn-circle"><i
+                            data-feather="calendar" className="text-white"></i></span>
+                          <div className="w-75 d-inline-block v-middle pl-2">
+                            <h6 className="message-title mb-0 mt-1">Event today</h6>
+                            <span
+                              className="font-12 text-nowrap d-block text-muted text-truncate">Just
+                              a reminder that you have event</span>
+                            <span className="font-12 text-nowrap d-block text-muted">9:10 AM</span>
+                          </div>
+                        </a>
+                        {/* <!-- Message --> */}
+                        <a href="javascript:void(0)"
+                          className="message-item d-flex align-items-center border-bottom px-3 py-2">
+                          <span className="btn btn-info rounded-circle btn-circle"><i
+                            data-feather="settings" className="text-white"></i></span>
+                          <div className="w-75 d-inline-block v-middle pl-2">
+                            <h6 className="message-title mb-0 mt-1">Settings</h6>
+                            <span
+                              className="font-12 text-nowrap d-block text-muted text-truncate">You
+                              can customize this template
+                              as you want</span>
+                            <span className="font-12 text-nowrap d-block text-muted">9:08 AM</span>
+                          </div>
+                        </a>
+                        {/* <!-- Message --> */}
+                        <a href="javascript:void(0)"
+                          className="message-item d-flex align-items-center border-bottom px-3 py-2">
+                          <span className="btn btn-primary rounded-circle btn-circle"><i
+                            data-feather="box" className="text-white"></i></span>
+                          <div className="w-75 d-inline-block v-middle pl-2">
+                            <h6 className="message-title mb-0 mt-1">Pavan kumar</h6> <span
+                              className="font-12 text-nowrap d-block text-muted">Just
+                              see the my admin!</span>
+                            <span className="font-12 text-nowrap d-block text-muted">9:02 AM</span>
+                          </div>
+                        </a>
+                      </div>
+                    </li>
+                    <li>
+                      <a className="nav-link pt-3 text-center text-dark" href="javascript:void(0);">
+                        <strong>Check all notifications</strong>
+                        <i className="fa fa-angle-right"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              {/* <!-- End Notification -->
+                <!-- ============================================================== -->
                 <!-- create new -->
                 <!-- ============================================================== --> */}
               <li className="nav-item dropdown">
@@ -206,11 +299,11 @@ export default function Main() {
               <li className="nav-item d-none d-md-block">
                 <a className="nav-link" href="javascript:void(0)">
                   <div className="customize-input">
-                    <select
+                    <select onChange={handleChangeLanguage}
                       className="custom-select form-control bg-white custom-radius custom-shadow border-0">
-                      <option defaultValue value="1">AR</option>
-                      <option value="2">EN</option>
-                      <option value="3">Fr</option>
+                      <option defaultValue value="ar">AR</option>
+                      <option value="en">EN</option>
+                      <option value="fr">Fr</option>
                     </select>
                   </div>
                 </a>
@@ -287,38 +380,38 @@ export default function Main() {
         <div className="scroll-sidebar" data-sidebarbg="skin6">
           {/* <!-- Sidebar navigation--> */}
           <nav className="sidebar-nav">
-            <ul id="sidebarnav">
-              <li className="sidebar-item"> <Link to="/dashboards/ministry" className="sidebar-link" >
+            <ul id="sidebarnav" ref={sidebarnav}>
+              <li className="sidebar-item"> <NavLink to="/dashboards/ministry" className="sidebar-link" onClick={addSelectedToParent} >
                 <i data-feather="home" className="feather-icon"></i><span
-                  className="hide-menu">Dashboard</span></Link></li>
-                  {/* <li className="sidebar-item"> <Link to="/dashboards/ministry"><a className="sidebar-link sidebar-link" href="#" 
+                  className="hide-menu">Dashboard</span></NavLink></li>
+                  {/* <li className="sidebar-item"> <NavLink to="/dashboards/ministry"><a className="sidebar-link sidebar-link" href="#" 
                     aria-expanded="false"><i data-feather="home" className="feather-icon"></i><span
-                      className="hide-menu">Dashboard</span></a></Link></li> */}
+                      className="hide-menu">Dashboard</span></a></NavLink></li> */}
               <li className="list-divider"></li>
               
               <li className="nav-small-cap"><span className="hide-menu">Works</span></li>
 
-              <li className="sidebar-item"> <Link to="/events" className="sidebar-link">
+              <li className="sidebar-item"> <NavLink to="/events" className="sidebar-link">
                 <i data-feather="tag" className="feather-icon"></i><span
-                  className="hide-menu">Events</span></Link></li>
-              <li className="sidebar-item"><Link to="/dashboards/chamber" className="sidebar-link" href="#!"
+                  className="hide-menu">Events</span></NavLink></li>
+              <li className="sidebar-item"><NavLink to="/dashboards/chamber" className="sidebar-link" href="#!"
                 aria-expanded="false"><i data-feather="message-square" className="feather-icon"></i><span
-                  className="hide-menu">Activies</span></Link></li>
-              <li className="sidebar-item"><Link to="/calendar" className="sidebar-link" href="/calendar"
+                  className="hide-menu">Activies</span></NavLink></li>
+              <li className="sidebar-item"><NavLink to="/calendar" className="sidebar-link" href="/calendar"
                 aria-expanded="false"><i data-feather="calendar" className="feather-icon"></i><span
-                  className="hide-menu">Calendar</span></Link></li>
+                  className="hide-menu">Calendar</span></NavLink></li>
 
               <li className="nav-small-cap"><span className="hide-menu">Users</span></li>
 
-              <li className="sidebar-item"> <Link to="/users" className="sidebar-link" href="#">
+              <li className="sidebar-item"> <NavLink to="/users" className="sidebar-link" href="#">
                 <i data-feather="tag" className="feather-icon"></i><span
-                  className="hide-menu">List</span></Link></li>
-              <li className="sidebar-item"> <Link to="/users" className="sidebar-link" href="#!">
+                  className="hide-menu">List</span></NavLink></li>
+              <li className="sidebar-item"> <NavLink to="/roles" className="sidebar-link" href="#!">
                 <i data-feather="message-square" className="feather-icon"></i><span
-                  className="hide-menu">Roles</span></Link></li>
-              <li className="sidebar-item"> <Link to="/users" className="sidebar-link" href="#!"
+                  className="hide-menu">Roles</span></NavLink></li>
+              <li className="sidebar-item"> <NavLink to="/permissions" className="sidebar-link" href="#!"
                 aria-expanded="false"><i data-feather="calendar" className="feather-icon"></i><span
-                  className="hide-menu">Permissions</span></Link></li>
+                  className="hide-menu">Permissions</span></NavLink></li>
 
               <li className="nav-small-cap"><span className="hide-menu">Organizations</span></li>
 

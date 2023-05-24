@@ -10,6 +10,31 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    public function __construct() {
+        // $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
+    /**
+     * @OA\Get(
+     *      path="/v1/login",
+     *      operationId="login",
+     *      tags={"Authentication"},
+     *      summary="Login user",
+     *      description="Returns user information and token",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
     //
     public function login(SigninRequest $request){
 
@@ -26,16 +51,20 @@ class AuthController extends Controller
         //     'email' => $data['email'],
         //     'password' => bcrypt($data['password']),
         // ];
-
-        if(!auth()->attempt($credentials,false)){
+        $token = auth()->attempt($credentials);
+        // if(!auth()->attempt($credentials,false)){
+        if(!$token){
             // return response()->json(['status' =>'success']);
             return response([
                 'status' =>'error',
                 'message' => 'Credentials Incorrect'], 422);
         }
 
+        return $this->respondWithToken($token);
+
+        $token = $this->createNewToken($token);
         $user = auth()->user();
-        $token = $user->createToken('main')->plainTextToken;
+        // $token = $user->createToken('main')->plainTextToken;
         // return response()->json(['status' =>'success']);
         // return response([
         //    'status' =>'success',
@@ -71,13 +100,17 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request){
-        $user = $request->user();
-        $user->currentAccessToken()->delete();
+        // $user = $request->user();
+        // $user->currentAccessToken()->delete();
 
-        return response('', 204);
+        // return response('', 204);
 
         auth()->logout();
-        return response()->json(['status' =>'success']);
+        return response()->json(['status' =>'Successfully logged out']);
+    }
+
+    public function refresh() {
+        return $this->respondWithToken(auth()->refresh());
     }
 
     public function check(Request $request){
@@ -198,5 +231,15 @@ class AuthController extends Controller
             'email' => $user['email'],
             'password' => $user['password'],
         ];
+    }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'user' => auth()->user()
+        ]);
     }
 }

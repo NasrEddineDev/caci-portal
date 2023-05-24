@@ -4,11 +4,10 @@ import axiosClient from "../../axios-client";
 import { useStateContext } from "../../contexts/ContextProvider";
 
 export default function Login() {
-  const emailRef = useRef();
-  const passwordRef = useRef();
-
   const [errors, setErrors] = useState();
   const {setUser, setToken} = useStateContext()
+  const emailRef = useRef();
+  const passwordRef = useRef();
   const onSubmit = (event) => {
     event.preventDefault();
 
@@ -17,11 +16,11 @@ export default function Login() {
       password: passwordRef.current.value,
     }
     setErrors(null);
-    axiosClient.post('/login', payload)
+    axiosClient.post('/v1/login', payload)
     .then((response) => {
       console.log(response.data);
       setUser(response.data.user);
-      setToken(response.data.token);
+      setToken(response.data.access_token);
     })
     .catch((error) => {
       console.log(error);

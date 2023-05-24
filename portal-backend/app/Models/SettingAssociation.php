@@ -9,7 +9,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class EntitySetting extends MorphPivot
+class SettingAssociation extends MorphPivot
 {
     // use HasFactory;
     use SoftDeletes, LogsActivity;
@@ -19,7 +19,7 @@ class EntitySetting extends MorphPivot
         return LogOptions::defaults();
     }
 
-    protected static $logName = 'entity_settings';
+    protected static $logName = 'settings_associations';
     static $logFillable = true;
     public $incrementing = true;
     protected $fillable = [

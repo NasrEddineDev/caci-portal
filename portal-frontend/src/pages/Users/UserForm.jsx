@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import axiosClient from "../../axios-client"
 import { useStateContext } from "../../contexts/ContextProvider"
+import { isAllowed } from "../Auth/Auth"
 
 export default function UserForm() {
   const { id } = useParams()
@@ -21,7 +22,7 @@ export default function UserForm() {
   if (id) {
     useEffect(() => {
       setLoading(true)
-      axiosClient.get('/users/' + id)
+      axiosClient.get('/v1/users/' + id)
         .then(response => {
           setLoading(false)
           setUser(response.data)
@@ -41,7 +42,7 @@ export default function UserForm() {
       if (!passwordRef.current.value) user['password'] = undefined
       // user.password = passwordRef.current.value
       // user.password_confirmation = passwordConfirmationRef.current.value
-      axiosClient.put('/users/' + user.id, user)
+      axiosClient.put('/v1/users/' + user.id, user)
       .then(response => {
         setNotification("User successfully updated")
           setLoading(false)
@@ -57,7 +58,7 @@ export default function UserForm() {
         })
     }
     else {
-      axiosClient.post('/users', user)
+      axiosClient.post('/v1/users', user)
      .then(response => {
       setNotification("User successfully created")
         setLoading(false)
@@ -100,6 +101,8 @@ export default function UserForm() {
           <input value={user.email} onChange={(e) => setUser({...user, email:e.target.value})} placeholder="Email" type="email" />
           <input type="password" ref={passwordRef} onChange={(e) => setUser({...user, password:e.target.value})} placeholder="Password" />
           <input type="password" ref={passwordConfirmationRef} onChange={(e) => setUser({...user, password_confirmation:e.target.value})} placeholder="Password Confirmation" />
+          {/* {isAllowed(user, 'user', ['store_role']) &&  <input type="text" ref={roleRef} onChange={(e) => setUser({...user, role:e.target.value})} placeholder="Role" /> } */}
+          {isAllowed(user, ['store_role']) &&  <input type="text" ref={roleRef} onChange={(e) => setUser({...user, role:e.target.value})} placeholder="Role" /> }
           <button className="btn">Save</button>
         </form>
       }

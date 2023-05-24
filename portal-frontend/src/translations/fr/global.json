@@ -1,0 +1,11 @@
+{
+    "header":{
+        "message": "Bonjours"
+    },
+    "home":{
+        "body": "Comment va tu"
+    },
+    "users":{
+        "list": "Liste Des Utilisateurs"
+    }
+}

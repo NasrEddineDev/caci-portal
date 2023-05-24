@@ -8,3 +8,15 @@ Implement Auth signin and signup and logout in backend
 30/04/2023
 Finish Signup feature
 Adding some pages: events, users, ...etc.
+
+
+To add to doc file:
+
+API documentation fully describes how the services function:
+    What is the API endpoint ( the URL that the request should be made to. e.g.,/users )
+    Which HTTP methods do endpoints support? (GET, POST, PUT, PATCH, DELETE)
+    What are the route parameters that the endpoint is expecting? (Query Params)
+    What should be the request body of the endpoint?
+    What kind of responses should we expect from the endpoint? And with what status code?
+
+Swagger is one of the most popular tools for API documentation. It lets us document the API endpoints and provides an interface to send requests to each API service and receive responses. Additionally, you can configure Swagger to communicate with multiple backend environments like local, development, staging, production, etc. This is extremely important in the process of testing the API.

@@ -1,0 +1,11 @@
+{
+    "header":{
+        "message": "Hello"
+    },
+    "home":{
+        "body": "How are you"
+    },
+    "users":{
+        "list": "Users List"
+    }
+}

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Laravel\Sanctum\HasApiTokens;
 use Mail;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes, LogsActivity, CausesActivity;
 
@@ -104,6 +105,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Role::class);
     }
 
+
+    public function getRightsAttribute()
+    {
+        return ['can_view_articles'];
+        // return App::currentLocale() == 'ar' ? "{$this->name_ar}" : "{$this->name_lt}";
+    }
+
     public function profile()
     {
         return $this->belongsTo(Profile::class);
@@ -187,5 +195,22 @@ class User extends Authenticatable implements MustVerifyEmail
     public function removeActivationCode()
     {
         session()->forget('activation_code_' . $this->id);
+    }
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier() {
+        return $this->getKey();
+    }
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims() {
+        return [];
     }
 }

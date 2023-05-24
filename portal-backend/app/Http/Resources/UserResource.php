@@ -25,8 +25,9 @@ class UserResource extends JsonResource
             'profile_id' => $this->profile_id,
             'organization_id' => $this->organization_id,
             'email_verfied_at' => $this->email_verfied_at,
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'created_at' => $this?->created_at?->toDateTimeString(),
+            'updated_at' => $this?->updated_at?->toDateTimeString(),
+            'deleted_at' => $this->updated_at?->toDateTimeString() ?? null,
 
         ];
     }

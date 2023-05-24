@@ -6,6 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
+/**
+ * @OA\Schema(
+ *     title="Project",
+ *     description="Project model",
+ *     @OA\Xml(
+ *         name="Project"
+ *     )
+ * )
+ */
 class Activity extends Model
 {
     use HasFactory;
